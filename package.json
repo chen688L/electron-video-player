@@ -1,0 +1,59 @@
+{
+  "name": "electron-video-player",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "postinstall": "node node_modules/ffmpeg-static/install.js",
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chen688L/electron-video-player.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chen688L/electron-video-player/issues"
+  },
+  "homepage": "https://github.com/chen688L/electron-video-player#readme",
+  "description": "",
+  "dependencies": {
+    "ffmpeg-static": "^5.2.0",
+    "flv.js": "^1.6.2",
+    "hls.js": "^1.6.16",
+    "mpegts.js": "^1.8.0",
+    "node-rtsp-stream": "^0.0.9",
+    "ws": "^8.21.0"
+  },
+  "devDependencies": {
+    "electron": "^42.3.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.electron-video-player",
+    "productName": "Electron Video Player",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "!dist/**",
+      "!**/.git/**"
+    ],
+    "asar": true,
+    "extraResources": [
+      {
+        "from": "node_modules/ffmpeg-static",
+        "to": "ffmpeg",
+        "filter": ["ffmpeg.exe", "ffmpeg"]
+      }
+    ],
+    "win": {
+      "target": ["nsis"]
+    }
+  }
+}
