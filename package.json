@@ -5,8 +5,8 @@
   "scripts": {
     "start": "electron .",
     "postinstall": "node node_modules/ffmpeg-static/install.js",
-    "dist": "electron-builder",
-    "dist:win": "electron-builder --win",
+    "dist": "node scripts/kill-and-clean.js && electron-builder",
+    "dist:win": "node scripts/kill-and-clean.js && electron-builder --win",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
