@@ -8,28 +8,9 @@
 - **M3U8/HLS** - 使用 hls.js 播放
 - **WebSocket 流** - ws:// 或 wss:// 协议的实时视频流
 
-### ⚠️ RTSP/RTMP 需要转换
+### ✅ RTSP / RTMP（内置 FFmpeg）
 
-浏览器和 Electron **不直接支持 RTSP/RTMP**，需要先转换为以下格式之一：
-
-#### 方案 1: FFmpeg 转 HLS
-```bash
-ffmpeg -i rtsp://camera-ip/stream -c:v libx264 -c:a aac -f hls http://localhost:8080/stream.m3u8
-```
-
-#### 方案 2: FFmpeg 转 FLV
-```bash
-ffmpeg -i rtsp://camera-ip/stream -c:v libx264 -c:a aac -f flv http://localhost:8080/stream.flv
-```
-
-#### 方案 3: node-rtsp-stream 转 WebSocket
-```bash
-# 安装依赖
-npm install node-rtsp-stream
-
-# 运行转换服务器
-node rtsp-server.js
-```
+直接输入 `rtsp://` 或 `rtmp://` 地址即可，程序内置 FFmpeg 自动转 FLV 播放（打包时已包含，用户无需安装）。
 
 ## 启动播放器
 
@@ -41,19 +22,15 @@ npm start
 
 1. **播放本地文件**：菜单 → 文件 → 打开文件
 2. **播放网络视频**：菜单 → 文件 → 打开网络地址
-3. **播放 RTSP 流**：先转换为 HLS/FLV/WebSocket，然后输入转换后的地址
+3. **播放 RTSP/RTMP**：直接输入 `rtsp://` 或 `rtmp://` 地址
 
-## mpegts.js vs flv.js
+## 打包体积说明
 
-### mpegts.js 优势
-- ✅ 支持 H.265/HEVC 编码
-- ✅ 支持 MSE 媒体源扩展
-- ✅ 更好的性能
-- ✅ 支持直播流
+安装包约 **450MB** 左右，主要来自：
+- **Electron（Chromium）**：约 300MB，所有 Electron 应用均如此
+- **FFmpeg**：约 79MB，用于 RTSP/RTMP 转码（仅打包一份）
 
-### flv.js 限制
-- ❌ 仅支持 H.264 编码
-- ❌ 不支持 H.265
+开发打包前执行 `npm install`（会下载 FFmpeg 到 `node_modules`，仅用于打进安装包）。
 
 ## WebSocket 流格式
 
@@ -88,4 +65,4 @@ A:
 - 使用更低的分辨率
 - 确保使用合适的编解码器
 
-因为非原生的视频监控播放器，界面友好清晰，安装后包会比较大，约500MB
+分发安装包：将 `dist/Electron Video Player Setup x.x.x.exe` 发给用户即可，无需 Node.js。
